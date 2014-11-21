@@ -1,9 +1,5 @@
-var Decorator = require("Decorator"),
-    decorator = new Decorator(),
-    X = decorator.accessor,
-    creepName, worker;
-
-require("XCreep")(decorator);
+var X = require("X"), 
+    creepName;
 
 for (creepName in Game.creeps) {
     if (Game.creeps.hasOwnProperty(creepName)) {
