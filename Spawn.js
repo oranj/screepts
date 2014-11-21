@@ -4,7 +4,8 @@ getNextCreepName = function(base) {
     do {
         str = base + i;
         i++;
-    } while (! Game.creeps.hasOwnProperty(str));
+        
+    } while (Game.creeps.hasOwnProperty(str));
     
     return str;
 };
@@ -29,7 +30,7 @@ Spawn = {
         return null;
     },
     
-    Worker: function(spawn) {  
+    Worker: function(spawn) {
         if (! spawn) { 
             spawn = Spawn.getFirst(); 
         }
