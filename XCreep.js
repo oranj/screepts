@@ -66,6 +66,36 @@ module.exports = function(decorator) {
                 } else {
                     this.moveTo(nearestEnemy);
                 }
+            } else {
+                X(this).wander();
+            }
+        },
+        
+        wander: function() {
+            var targetPos, nearbyCreep, wanderPos, status;
+            
+            wanderPos = X(this).getAttr('wander');
+            if (! wanderPos) {
+                nearbyCreep = X(this).findNearest(Game.MY_CREEPS);
+                if (nearbyCreep) {
+                    targetPos = nearbyCreep.pos;
+                } else {
+                    targetPos = this.pos;
+                }
+                
+                wanderPos = {
+                    x: targetPos.x + Math.round(Math.random() * 10) - 5,
+                    y: targetPos.y + Math.round(Math.random() * 10) - 5
+                };
+                
+                X(this).setAttr('wander', wanderPos);
+            } else {
+                
+                status = this.moveTo(wanderPos.x, wanderPos.y);
+                if (status === 0 || status == -2) {
+                    X(this).setAttr('wander', false);
+                    X(this).wander();
+                }
             }
         },
         
@@ -94,7 +124,6 @@ module.exports = function(decorator) {
                     this.moveTo(nearestSpawn);   
                 }
             } else {
-                console.log("Builder harvesting");
                 this.harvestEnergy();
             }
         },
