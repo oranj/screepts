@@ -12,10 +12,13 @@ var Spawn,
 
     registerSpawnConfig = function(name, body) {
         Spawn[name] = function(spawn) {
+            var creepName = getNextCreepName(name);
+            
             if (! spawn) {
                 spawn = Spawn.getFirst();
             }
-            spawn.createCreep(body, getNextCreepName(name));
+            spawn.createCreep(body, creepName);
+            console.log("Creating creep `" + creepName + "`");
         };
     };
     
@@ -42,5 +45,6 @@ Spawn = {
 
 registerSpawnConfig("Worker", [Game.WORK, Game.CARRY, Game.MOVE]);
 registerSpawnConfig("Builder", [Game.WORK, Game.WORK, Game.WORK, Game.CARRY, Game.MOVE]);
+registerSpawnConfig("Guard",  [Game.TOUGH,Game.ATTACK,Game.MOVE,Game.MOVE]);
 
 module.exports = Spawn;
