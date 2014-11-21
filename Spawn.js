@@ -1,15 +1,24 @@
 var Spawn, 
-getNextCreepName = function(base) {
-    var i = 1, str;
-    do {
-        str = base + i;
-        i++;
+    getNextCreepName = function(base) {
+        var i = 1, str;
+        do {
+            str = base + i;
+            i++;
+            
+        } while (Game.creeps.hasOwnProperty(str));
         
-    } while (Game.creeps.hasOwnProperty(str));
-    
-    return str;
-};
+        return str;
+    }, 
 
+    registerSpawnConfig = function(name, body) {
+        Spawn[name] = function(spawn) {
+            if (! spawn) {
+                spawn = Spawn.getFirst();
+            }
+            spawn.createCreep(body, getNextCreepName(name));
+        };
+    };
+    
 Spawn = {
     
     getFirst: function() {
@@ -28,27 +37,10 @@ Spawn = {
             }
         }
         return null;
-    },
-    
-    Worker: function(spawn) {
-        if (! spawn) { 
-            spawn = Spawn.getFirst(); 
-        }
-        spawn.createCreep(
-            [Game.WORK, Game.CARRY, Game.MOVE], 
-            getNextCreepName("Worker")
-        );
-    },
-    
-    Builder: function(spawn) {
-        if (! spawn) {
-            spawn = Spawn.getFirst();   
-        }
-        spawn.createCreep(
-            [Game.WORK, Game.WORK, Game.WORK, Game.CARRY, Game.MOVE], 
-            getNextCreepName("Builder")
-        );
     }
 };
+
+registerSpawnConfig("Worker", [Game.WORK, Game.CARRY, Game.MOVE]);
+registerSpawnConfig("Builder", [Game.WORK, Game.WORK, Game.WORK, Game.CARRY, Game.MOVE]);
 
 module.exports = Spawn;
